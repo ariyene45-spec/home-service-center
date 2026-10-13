@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home Service Booking Demo</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+    }
+    .container {
+      width: 1200px;
+      max-width: 92%;
+      margin: 0 auto;
+    }
+    header {
+      background: linear-gradient(135deg, #0f172a, #1d4ed8);
+      color: white;
+      padding: 18px 0;
+    }
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      align-items: center;
+      font-size: 14px;
+    }
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-primary { background: #f59e0b; color: #111827; }
+    .btn-gray { background: #e5e7eb; color: #111827; }
+
+    .hero {
+      background: linear-gradient(180deg, #eff6ff, #fff);
+      padding: 50px 0 30px;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr;
+      gap: 30px;
+      align-items: center;
+    }
+    .hero h1 {
+      font-size: 46px;
+      margin: 0 0 18px;
+      line-height: 1.1;
+    }
+    .hero p {
+      font-size: 18px;
+      color: #475569;
+      margin-bottom: 20px;
+    }
+    .search-box {
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 16px 30px rgba(15, 23, 42, 0.08);
+      padding: 18px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .search-box input, .search-box select {
+      flex: 1;
+      min-width: 150px;
+      padding: 14px 16px;
+      border: 1px solid #dbe3ef;
+      border-radius: 12px;
+      font-size: 15px;
+      outline: none;
+    }
+    .booking-card {
+      background: white;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+    }
+    .mini-tag {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1d4ed8;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .booking-card h3 {
+      margin: 0 0 14px;
+      font-size: 28px;
+    }
+    .list {
+      margin: 18px 0;
+      padding-left: 18px;
+      color: #475569;
+      line-height: 1.8;
+    }
+
+    .section {
+      padding: 40px 0;
+    }
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .title-row h2 {
+      margin: 0;
+      font-size: 32px;
+    }
+    .service-grid, .provider-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.05);
+    }
+    .icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      background: #e0f2fe;
+      margin-bottom: 12px;
+    }
+    .card h4 {
+      font-size: 20px;
+      margin: 0 0 6px;
+    }
+    .muted {
+      color: #64748b;
+      font-size: 14px;
+    }
+    .price {
+      font-size: 22px;
+      font-weight: 700;
+      margin: 12px 0 18px;
+    }
+    .chip {
+      background: #ecfdf5;
+      color: #047857;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 10px;
+      display: inline-block;
+      margin-top: 8px;
+    }
+
+    .status-box {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .status-box strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .booking-flow {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      margin-top: 20px;
+    }
+    .form-panel, .summary-panel {
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.05);
+      padding: 22px;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+    label {
+      display: block;
+      font-size: 13px;
+      color: #475569;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid #dbe3ef;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 15px;
+      background: #fff;
+    }
+    textarea { min-height: 110px; resize: vertical; }
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin: 12px 0;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #edf2f7;
+      color: #475569;
+    }
+    .total {
+      font-size: 28px;
+      font-weight: 700;
+      margin-top: 20px;
+      color: #111827;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid, .booking-flow, .service-grid, .provider-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="logo">HomeFix</div>
+      <div class="nav-links">
+        <span>Services</span>
+        <span>Providers</span>
+        <span>Pricing</span>
+        <span>Support</span>
+        <button class="btn btn-gray">Login</button>
+        <button class="btn btn-primary">Get Started</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="mini-tag">Fast home repair in your area</div>
+        <h1>Fix your home problem in minutes.</h1>
+        <p>
+          AC service, fridge repair, pipe fixing, electrician, and home maintenance — all from trusted local experts.
+        </p>
+
+        <div class="search-box">
+          <input type="text" placeholder="What service do you need?" />
+          <select>
+            <option>Choose district</option>
+            <option>Dhaka</option>
+            <option>Chattogram</option>
+            <option>Khulna</option>
+            <option>Rajshahi</option>
+          </select>
+          <button class="btn btn-primary">Search</button>
+        </div>
+
+        <div class="status-box">
+          <div>
+            <strong>2,400+ jobs completed</strong>
+            <span class="muted">Trusted by local homeowners</span>
+          </div>
+          <div class="chip">4.9 / 5 Rating</div>
+        </div>
+      </div>
+
+      <div class="booking-card">
+        <div class="mini-tag">Today’s top pick</div>
+        <h3>AC Service</h3>
+        <p class="muted">Gas refill, cleaning, and system check-up</p>
+
+        <ul class="list">
+          <li>Same day service available</li>
+          <li>Professional technician</li>
+          <li>Transparent pricing</li>
+          <li>Warranty included</li>
+        </ul>
+
+        <button class="btn btn-primary" style="width:100%;">Book Now</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="title-row">
+        <h2>Popular services</h2>
+        <button class="btn btn-gray">See all</button>
+      </div>
+
+      <div class="service-grid">
+        <div class="card">
+          <div class="icon">❄️</div>
+          <h4>AC Repair</h4>
+          <div class="muted">Cooling issue, gas refill, cleaning</div>
+          <div class="price">৳1,200+</div>
+          <button class="btn btn-primary">Book</button>
+        </div>
+
+        <div class="card">
+          <div class="icon">🧊</div>
+          <h4>Fridge Repair</h4>
+          <div class="muted">Compressor, cooling, electric fault</div>
+          <div class="price">৳900+</div>
+          <button class="btn btn-primary">Book</button>
+        </div>
+
+        <div class="card">
+          <div class="icon">🚿</div>
+          <h4>Pipe Fixing</h4>
+          <div class="muted">Leakage, installation, unblock</div>
+          <div class="price">৳750+</div>
+          <button class="btn btn-primary">Book</button>
+        </div>
+
+        <div class="card">
+          <div class="icon">💡</div>
+          <h4>Electrician</h4>
+          <div class="muted">Wiring, switch, fan, socket</div>
+          <div class="price">৳600+</div>
+          <button class="btn btn-primary">Book</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="title-row">
+        <h2>Top local providers</h2>
+        <button class="btn btn-gray">View all</button>
+      </div>
+
+      <div class="provider-grid">
+        <div class="card">
+          <div class="icon" style="background:#fef3c7;">🧑‍🔧</div>
+          <h4>Alam AC Works</h4>
+          <div class="muted">AC & cooling expert</div>
+          <div class="chip">4.9 ★</div>
+          <div class="price" style="font-size:18px; margin-top:12px;">From ৳1,200</div>
+        </div>
+
+        <div class="card">
+          <div class="icon" style="background:#dcfce7;">🧰</div>
+          <h4>Modern Fix</h4>
+          <div class="muted">Fridge & home appliance</div>
+          <div class="chip">4.8 ★</div>
+          <div class="price" style="font-size:18px; margin-top:12px;">From ৳900</div>
+        </div>
+
+        <div class="card">
+          <div class="icon" style="background:#e0e7ff;">🔧</div>
+          <h4>Pipe Pro</h4>
+          <div class="muted">Plumbing & drainage</div>
+          <div class="chip">4.7 ★</div>
+          <div class="price" style="font-size:18px; margin-top:12px;">From ৳750</div>
+        </div>
+
+        <div class="card">
+          <div class="icon" style="background:#fce7f3;">⚡</div>
+          <h4>Light House</h4>
+          <div class="muted">Electric work & repair</div>
+          <div class="chip">4.9 ★</div>
+          <div class="price" style="font-size:18px; margin-top:12px;">From ৳600</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="title-row">
+        <h2>Booking</h2>
+      </div>
+
+      <div class="booking-flow">
+        <div class="form-panel">
+          <div class="mini-tag">Create Booking</div>
+
+          <div class="form-row">
+            <div>
+              <label>Service</label>
+              <select>
+                <option>AC Service</option>
+                <option>Fridge Repair</option>
+                <option>Pipe Fixing</option>
+                <option>Electrician</option>
+              </select>
+            </div>
+            <div>
+              <label>Preferred Time</label>
+              <input type="datetime-local" value="2026-10-13T16:30" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div>
+              <label>Customer Name</label>
+              <input type="text" value="Rahman Hossain" />
+            </div>
+            <div>
+              <label>Phone</label>
+              <input type="text" value="+880 1700-000000" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div>
+              <label>District</label>
+              <select>
+                <option>Dhaka</option>
+                <option>Chattogram</option>
+                <option>Khulna</option>
+              </select>
+            </div>
+            <div>
+              <label>Area</label>
+              <input type="text" value="Dhanmondi" />
+            </div>
+          </div>
+
+          <div>
+            <label>Problem Details</label>
+            <textarea>AC is not cooling properly and making a loud noise in the compressor.</textarea>
+          </div>
+
+          <div style="margin-top: 20px;">
+            <button class="btn btn-primary" style="width:100%;">Confirm Booking</button>
+          </div>
+        </div>
+
+        <div class="summary-panel">
+          <div class="mini-tag">Booking summary</div>
+
+          <div class="summary-item">
+            <span>Service</span>
+            <strong>AC Service</strong>
+          </div>
+          <div class="summary-item">
+            <span>Technician</span>
+            <strong>Alam AC Works</strong>
+          </div>
+          <div class="summary-item">
+            <span>Visit Fee</span>
+            <strong>৳500</strong>
+          </div>
+          <div class="summary-item">
+            <span>Maintenance</span>
+            <strong>৳700</strong>
+          </div>
+          <div class="summary-item">
+            <span>Service Charge</span>
+            <strong>৳200</strong>
+          </div>
+
+          <div class="total">Total: ৳1,400</div>
+
+          <button class="btn btn-gray" style="margin-top: 18px; width:100%;">Pay with Cash / Card</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
